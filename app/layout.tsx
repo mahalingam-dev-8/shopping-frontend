@@ -24,6 +24,7 @@ export default async function RootLayout({
   let isAdmin = false;
   if (isAuthenticated) {
     const user = await getMe() as { role?: string };
+
     isAdmin = user?.role === "ADMIN";
   }
 

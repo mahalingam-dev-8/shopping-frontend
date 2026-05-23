@@ -14,7 +14,9 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LogoutIcon from "@mui/icons-material/Logout";
+import Chip from "@mui/material/Chip";
 import { AuthContext } from "../auth/auth-context";
+import { AdminContext } from "../auth/admin-context";
 import { MouseEvent, useContext, useState } from "react";
 import Link from "next/link";
 import { routes, unauthenticatedRoutes } from "../common/constants/routes";
@@ -124,10 +126,19 @@ export default function Header({ logout }: HeaderProps) {
 }
 
 const Settings = ({ logout }: HeaderProps) => {
+  const isAdmin = useContext(AdminContext);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   return (
-    <Box sx={{ flexGrow: 0 }}>
+    <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center", gap: 1.5 }}>
+      <Chip
+        label={isAdmin ? "Admin" : "Customer"}
+        size="small"
+        sx={isAdmin
+          ? { bgcolor: "#f59e0b22", color: "#f59e0b", border: "1px solid #f59e0b44", fontWeight: 600 }
+          : { bgcolor: "#3b82f622", color: "#60a5fa", border: "1px solid #3b82f644", fontWeight: 600 }
+        }
+      />
       <Tooltip title="Account">
         <IconButton onClick={(e) => setAnchorElUser(e.currentTarget)} sx={{ p: 0 }}>
           <Avatar

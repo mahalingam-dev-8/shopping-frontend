@@ -13,8 +13,8 @@ export default function Login() {
   const [state, formAction] = useFormState(login, { error: "", success: false });
 
   useEffect(() => {
-    if (state.success) router.push("/");
-  }, [state.success]);
+    if (state?.success) router.push("/");
+  }, [state?.success]);
 
   return (
     <Card sx={{ width: 400, p: 1 }}>
@@ -33,15 +33,15 @@ export default function Login() {
           <form action={formAction}>
             <Stack spacing={2}>
               <TextField
-                error={!!state.error}
-                helperText={state.error}
+                error={!!state?.error}
+                helperText={state?.error}
                 name="email"
                 label="Email"
                 type="email"
                 fullWidth
               />
               <TextField
-                error={!!state.error}
+                error={!!state?.error}
                 name="password"
                 label="Password"
                 type="password"
