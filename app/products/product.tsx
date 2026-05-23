@@ -3,7 +3,6 @@
 import { Card, CardActionArea, Stack, Typography } from "@mui/material";
 import { Product as IProduct } from "./productsprops.interface";
 import Image from "next/image";
-import { API_URL } from "../common/constants/api";
 import { useRouter } from "next/navigation";
 
 
@@ -25,8 +24,8 @@ const router = useRouter()
       <Typography variant="h4">{product.name}</Typography>
       <Typography>{product.description}</Typography>
       {
-        product.imageexists && (
-          <Image src={`${API_URL}/images/products/${product.id}.jpg`} alt="Picture of the product" height="0" width="0" className="w-full h-auto" sizes="100vw"/>
+        product.imageUrl && (
+          <Image src={product.imageUrl} alt="Picture of the product" height="0" width="0" className="w-full h-auto" sizes="100vw"/>
         )
       }
       <Typography>${product.price}</Typography>
