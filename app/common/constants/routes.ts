@@ -14,4 +14,8 @@ export const routes = [
     title: "Home",
     path: "/",
   },
+  {
+    title: "My Orders",
+    path: "/orders",
+  },
 ];
