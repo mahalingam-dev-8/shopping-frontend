@@ -2,12 +2,15 @@
 
 import { Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AdminContext } from "@/app/auth/admin-context";
 import CreateProductModal from "./create-product-modal";
 
 export default function CreateProductFab() {
+  const isAdmin = useContext(AdminContext);
   const [modalVisible, setModalVisible] = useState(false);
+
+  if (!isAdmin) return null;
 
   return (
     <>
