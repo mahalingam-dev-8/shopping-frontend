@@ -2,7 +2,6 @@
 import { Grid, Stack, Typography } from "@mui/material";
 import gproduct from "./product"
 import Image from "next/image";
-import { API_URL } from "@/app/common/constants/api";
 import Checkout from "@/app/checkout/checkout";
 
 interface SingleProductProps{
@@ -17,9 +16,9 @@ export default async function( {params} : SingleProductProps ){
 <Grid container marginBottom={"2rem"} marginTop={"2rem"} rowGap={3}> 
     
          {
-        product.imageexists && (
+        product.imageUrl && (
              <Grid md={6} xs={12}>
-          <Image src={`${API_URL}/images/products/${product.id}.jpg`} alt="Picture of the product" height="0" width="0" className="w-full sm:w-3/4 h-auto" sizes="100vw"/>
+          <Image src={product.imageUrl} alt="Picture of the product" height="0" width="0" className="w-full sm:w-3/4 h-auto" sizes="100vw"/>
         </Grid>)
       }
       

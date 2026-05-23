@@ -4,7 +4,7 @@ const backendHostname = new URL(apiUrl).hostname;
 
 const nextConfig = {
     images: {
-        remotePatterns: [...new Set(["localhost", backendHostname])].map(hostname => ({ hostname }))
+        remotePatterns: [...new Set(["localhost", backendHostname, "shoppy-product-images-mahalingam.s3.amazonaws.com"])].map(hostname => ({ hostname }))
     },
     async rewrites() {
         return [
