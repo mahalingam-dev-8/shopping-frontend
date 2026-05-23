@@ -3,6 +3,7 @@ import gproduct from "./product"
 import Image from "next/image";
 import Checkout from "@/app/checkout/checkout";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import BackButton from "./back-button";
 
 interface SingleProductProps {
   params: { productId: string }
@@ -12,7 +13,9 @@ export default async function ({ params }: SingleProductProps) {
   const product = await gproduct(+params.productId);
 
   return (
-    <Grid container spacing={6} sx={{ py: 6 }}>
+    <Box sx={{ pt: 4 }}>
+    <BackButton />
+    <Grid container spacing={6} sx={{ pb: 6 }}>
       <Grid item md={6} xs={12}>
         <Box
           sx={{
@@ -72,5 +75,6 @@ export default async function ({ params }: SingleProductProps) {
         </Stack>
       </Grid>
     </Grid>
+    </Box>
   );
 }

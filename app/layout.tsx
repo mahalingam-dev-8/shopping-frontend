@@ -6,6 +6,7 @@ import Header from "./header/header";
 import Providers from "./providers";
 import authenticated from "./auth/authenticated";
 import logout from "./auth/logout";
+import getMe from "./get-me";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +20,17 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isAuthenticated = await authenticated();
+  const isAuthenticated = authenticated();
+  let isAdmin = false;
+  if (isAuthenticated) {
+    const user = await getMe() as { role?: string };
+    isAdmin = user?.role === "ADMIN";
+  }
 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers authenticated={isAuthenticated}>
+        <Providers authenticated={isAuthenticated} isAdmin={isAdmin}>
           <CssBaseline />
           <Header logout={logout} />
           <Container>{children}</Container>
