@@ -15,7 +15,8 @@ export default function Checkout({productid}:Checkoutnumber)
     const handleset = async() =>
 {
     // const session = await checkout(productid);
-    const { error, data } = await checkout(productid);
+    const origin = window.location.origin;
+    const { error, data } = await checkout(productid, `${origin}/`, `${origin}/`);
 
 if (error) {
   console.error("Checkout error:", error);
