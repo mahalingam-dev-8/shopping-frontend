@@ -23,8 +23,9 @@ export default function ProductsGrid({products}: Productgrid){
         const auth = await getAuthentication();
         const origin = window.location.origin;
         socketRef.current = io(origin, {
-          path: "/api/socket.io",
+          path: "/api/socket.io/",
           transports: ["polling"],
+          withCredentials: true,
           auth: { Authentication: auth?.value },
         });
 
