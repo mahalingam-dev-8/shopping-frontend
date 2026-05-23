@@ -3,7 +3,6 @@
 import { API_URL } from "@/app/common/constants/api";
 import { getHeaders, post } from "@/app/common/util/fetch";
 import { revalidateTag } from "next/cache";
-import Products from "../products";
 
 
 
@@ -23,16 +22,16 @@ export default async function createProduct(formData: FormData) {
 
 async function uploadProductImage(productId: number, file: File)
 {
-
   const formData = new FormData();
-  formData.append('image',file);
-  
-  await fetch(`${API_URL}/Products/${productId}/image`,{
+  formData.append('image', file);
+
+  const res = await fetch(`${API_URL}/Products/${productId}/image`, {
     body: formData,
     headers: getHeaders(),
-    method:"POST",
+    method: "POST",
+  });
 
-  })
-
-
+  const data = await res.json();
+  console.log("[uploadProductImage] status:", res.status, "response:", data);
+  return data;
 }
