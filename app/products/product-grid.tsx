@@ -5,7 +5,7 @@ import Product from "./product";
 import { Product as IProduct } from "./productsprops.interface";
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { API_URL } from '../common/constants/api';
+
 import getAuthentication from '../auth/get-authenticated';
 
 interface Productgrid{
@@ -21,8 +21,11 @@ export default function ProductsGrid({products}: Productgrid){
     useEffect(() => {
       const createSocket = async () => {
         const auth = await getAuthentication();
-        socketRef.current = io(API_URL!, {
-          auth: { Authentication: auth },
+        const origin = window.location.origin;
+        socketRef.current = io(origin, {
+          path: "/api/socket.io",
+          transports: ["polling"],
+          auth: { Authentication: auth?.value },
         });
 
         socketRef.current.on("updated", () => {
