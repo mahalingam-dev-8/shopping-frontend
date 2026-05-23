@@ -2,7 +2,7 @@
 
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+
 import { API_URL } from "@/app/common/constants/api";
 import { getErrorMessage } from "@/app/common/util/errors";
 import { FormResponse } from "@/app/common/interfaces/form-response.interface";
@@ -11,7 +11,7 @@ import { AUTHENTICATION_COOKIE } from "../auth-cookie";
 export default async function login(
   _prevState: FormResponse,
   formData: FormData
-) {
+): Promise<FormResponse> {
   const res = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -22,7 +22,7 @@ export default async function login(
     return { error: getErrorMessage(parsedRes) };
   }
   setAuthCookie(res);
-  redirect("/");
+  return { error: "", success: true };
 }
 
 const setAuthCookie = (response: Response) => {

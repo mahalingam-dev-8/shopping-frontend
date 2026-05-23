@@ -13,6 +13,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { AuthContext } from "../auth/auth-context";
 import { MouseEvent, useContext, useState } from "react";
 import Link from "next/link";
@@ -40,107 +41,81 @@ export default function Header({ logout }: HeaderProps) {
   const pages = isAuthenticated ? routes : unauthenticatedRoutes;
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <ShoppingBasketIcon
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-          />
+        <Toolbar disableGutters sx={{ gap: 2 }}>
+          <ShoppingBasketIcon sx={{ color: "primary.main", display: { xs: "none", md: "flex" } }} />
           <Typography
             variant="h6"
-            noWrap
             component={Link}
             href="/"
             sx={{
-              mr: 2,
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
+              fontWeight: 800,
+              letterSpacing: ".2rem",
+              color: "primary.main",
               textDecoration: "none",
+              mr: 4,
             }}
           >
-            Shoppy
+            SHOPPY
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
+            <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
               keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
+              transformOrigin={{ vertical: "top", horizontal: "left" }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
+              sx={{ display: { xs: "block", md: "none" } }}
             >
               {pages.map((page) => (
                 <MenuItem
                   key={page.title}
-                  onClick={() => {
-                    router.push(page.path);
-                    handleCloseNavMenu();
-                  }}
+                  onClick={() => { router.push(page.path); handleCloseNavMenu(); }}
                 >
                   <Typography textAlign="center">{page.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <ShoppingBasketIcon
-            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
-          />
+
+          <ShoppingBasketIcon sx={{ color: "primary.main", display: { xs: "flex", md: "none" } }} />
           <Typography
-            variant="h5"
-            noWrap
+            variant="h6"
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
-              mr: 2,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
               fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
+              fontWeight: 800,
+              letterSpacing: ".2rem",
+              color: "primary.main",
               textDecoration: "none",
             }}
           >
-            Shoppy
+            SHOPPY
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 1 }}>
             {pages.map((page) => (
               <Button
                 key={page.title}
-                onClick={() => {
-                  router.push(page.path);
-                  handleCloseNavMenu();
-                }}
-                sx={{ my: 2, color: "white", display: "block" }}
+                onClick={() => { router.push(page.path); handleCloseNavMenu(); }}
+                sx={{ color: "text.secondary", "&:hover": { color: "text.primary" } }}
               >
                 {page.title}
               </Button>
             ))}
           </Box>
+
           {isAuthenticated && <Settings logout={logout} />}
         </Toolbar>
       </Container>
@@ -151,45 +126,34 @@ export default function Header({ logout }: HeaderProps) {
 const Settings = ({ logout }: HeaderProps) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   return (
     <Box sx={{ flexGrow: 0 }}>
-      <Tooltip title="Open settings">
-        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+      <Tooltip title="Account">
+        <IconButton onClick={(e) => setAnchorElUser(e.currentTarget)} sx={{ p: 0 }}>
+          <Avatar
+            alt="User"
+            sx={{ width: 36, height: 36, bgcolor: "#f59e0b22", color: "primary.main", border: "1px solid #f59e0b44" }}
+          />
         </IconButton>
       </Tooltip>
       <Menu
         sx={{ mt: "45px" }}
-        id="menu-appbar"
         anchorEl={anchorElUser}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
         keepMounted
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
         open={Boolean(anchorElUser)}
-        onClose={handleCloseUserMenu}
+        onClose={() => setAnchorElUser(null)}
       >
         <MenuItem
-          key="Logout"
           onClick={async () => {
             await logout();
-            handleCloseUserMenu();
+            setAnchorElUser(null);
           }}
+          sx={{ gap: 1.5, color: "error.main" }}
         >
-          <Typography textAlign="center">Logout</Typography>
+          <LogoutIcon fontSize="small" />
+          <Typography>Logout</Typography>
         </MenuItem>
       </Menu>
     </Box>
