@@ -1,20 +1,26 @@
 "use client";
 
-import { Button, Card, CardContent, Divider, Stack, TextField, Typography } from "@mui/material";
+import {
+  Button, Card, CardContent, Divider, Stack,
+  TextField, Typography, ToggleButton, ToggleButtonGroup
+} from "@mui/material";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import PersonIcon from "@mui/icons-material/Person";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import NextLink from "next/link";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import createUser from "./create-user";
 
 export default function Signup() {
   const router = useRouter();
   const [state, formAction] = useFormState(createUser, { error: "", success: false });
+  const [role, setRole] = useState("USER");
 
   useEffect(() => {
-    if (state.success) router.push("/");
-  }, [state.success]);
+    if (state?.success) router.push("/");
+  }, [state?.success]);
 
   return (
     <Card sx={{ width: 400, p: 1 }}>
@@ -37,16 +43,60 @@ export default function Signup() {
                 label="Email"
                 type="email"
                 fullWidth
-                helperText={state.error}
-                error={!!state.error}
+                helperText={state?.error}
+                error={!!state?.error}
               />
               <TextField
                 name="password"
                 label="Password"
                 type="password"
                 fullWidth
-                error={!!state.error}
+                error={!!state?.error}
               />
+
+              <input type="hidden" name="role" value={role} />
+
+              <Stack spacing={1}>
+                <Typography variant="body2" color="text.secondary">
+                  I am a...
+                </Typography>
+                <ToggleButtonGroup
+                  value={role}
+                  exclusive
+                  onChange={(_, val) => val && setRole(val)}
+                  fullWidth
+                >
+                  <ToggleButton
+                    value="USER"
+                    sx={{
+                      gap: 1,
+                      "&.Mui-selected": {
+                        bgcolor: "#f59e0b22",
+                        color: "#f59e0b",
+                        borderColor: "#f59e0b44",
+                      },
+                    }}
+                  >
+                    <PersonIcon fontSize="small" />
+                    Customer
+                  </ToggleButton>
+                  <ToggleButton
+                    value="ADMIN"
+                    sx={{
+                      gap: 1,
+                      "&.Mui-selected": {
+                        bgcolor: "#f59e0b22",
+                        color: "#f59e0b",
+                        borderColor: "#f59e0b44",
+                      },
+                    }}
+                  >
+                    <AdminPanelSettingsIcon fontSize="small" />
+                    Admin
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </Stack>
+
               <Button type="submit" variant="contained" fullWidth size="large">
                 Create Account
               </Button>

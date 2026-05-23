@@ -18,6 +18,7 @@ export default async function login(
     body: JSON.stringify(Object.fromEntries(formData)),
   });
   const parsedRes = await res.json();
+
   if (!res.ok) {
     return { error: getErrorMessage(parsedRes) };
   }
