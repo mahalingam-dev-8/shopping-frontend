@@ -2,7 +2,15 @@
 const nextConfig = {
     images:{
         remotePatterns : [{hostname : "localhost"}]
-    }
+    },
+    async rewrites() {
+        return [
+            {
+                source: '/api/:path*',
+                destination: 'http://localhost:3001/:path*',
+            },
+        ];
+    },
 };
 
 export default nextConfig;
