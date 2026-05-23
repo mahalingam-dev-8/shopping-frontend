@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://shoppy-backend-env.eba-x664h9mv.us-east-1.elasticbeanstalk.com/:path*"
+    }
+  ]
+}
