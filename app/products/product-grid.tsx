@@ -21,9 +21,9 @@ export default function ProductsGrid({products}: Productgrid){
     useEffect(() => {
       const createSocket = async () => {
         const auth = await getAuthentication();
-        const origin = window.location.origin;
-        socketRef.current = io(origin, {
-          path: "/api/socket.io/",
+        const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+        socketRef.current = io(backendUrl, {
+          path: "/socket.io/",
           transports: ["polling"],
           withCredentials: true,
           auth: { Authentication: auth?.value },
