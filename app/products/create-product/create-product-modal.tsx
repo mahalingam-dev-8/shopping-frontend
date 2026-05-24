@@ -2,6 +2,7 @@
 
 import { Box, Button, Divider, Modal, Stack, TextField, Typography } from "@mui/material";
 import { CSSProperties, useState } from "react";
+import { useRouter } from "next/navigation";
 import { FormResponse } from "../../common/interfaces/form-response.interface";
 import createProduct from "../actions/create-product";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -39,6 +40,7 @@ interface CreateProductModalProps {
 }
 
 export default function CreateProductModal({ open, handleClose }: CreateProductModalProps) {
+  const router = useRouter();
   const [response, setResponse] = useState<FormResponse>();
   const [filename, setfilename] = useState("");
 
@@ -63,7 +65,7 @@ export default function CreateProductModal({ open, handleClose }: CreateProductM
             action={async (formData) => {
               const res = await createProduct(formData);
               setResponse(res);
-              if (!res.error) onClose();
+              if (!res.error) { onClose(); router.refresh(); }
             }}
           >
             <Stack spacing={2}>
