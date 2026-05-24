@@ -19,6 +19,7 @@ export default function ProductsGrid({products}: Productgrid){
     const socketRef = useRef<Socket | null>(null);
 
     useEffect(() => {
+      if (process.env.NODE_ENV !== "production") {
       const createSocket = async () => {
         const auth = await getAuthentication();
         const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
@@ -35,6 +36,7 @@ export default function ProductsGrid({products}: Productgrid){
       };
 
       createSocket();
+    }
 
       return () => {
         socketRef.current?.disconnect();
