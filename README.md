@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🛒 Shoppy — Frontend
+
+The frontend for [Shoppy](https://github.com/mahalingam-dev-8/shopping-backend), a full-stack e-commerce platform built with Next.js 14.
+
+**Live Demo:** [shopping-frontend-ebon.vercel.app](https://shopping-frontend-ebon.vercel.app)
+
+---
+
+## Tech Stack
+
+- **Next.js 14** — App Router, Server Components, Server Actions
+- **TypeScript** — End-to-end type safety
+- **Tailwind CSS + Material UI** — Responsive styling and component library
+- **Stripe.js** — Client-side payment integration
+- **Socket.io Client** — Real-time product updates
+
+---
+
+## Features
+
+- Server-side rendering with Next.js App Router for fast initial loads
+- JWT authentication with HttpOnly cookies (managed via Server Actions)
+- Role-based UI — admin dashboard for product management, user view for browsing and purchasing
+- Stripe Checkout integration for secure payments
+- Product image display from AWS S3
+- Order history page for users
+- Real-time product updates via Socket.io
+- Middleware-based route protection
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/mahalingam-dev-8/shopping-frontend.git
+cd shopping-frontend
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create `.env.local`:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3000
+NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_...
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Run the dev server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Open [http://localhost:3002](http://localhost:3002).
 
-## Learn More
+> The backend must be running at the URL specified in `NEXT_PUBLIC_API_URL`. See the [backend repo](https://github.com/mahalingam-dev-8/shopping-backend) for setup instructions.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Deployed on **Vercel** with automatic deploys from `main` branch. API requests are routed through **AWS CloudFront** CDN to the Elastic Beanstalk backend for HTTPS termination and edge caching.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Related
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Backend:** [shopping-backend](https://github.com/mahalingam-dev-8/shopping-backend) — NestJS API, PostgreSQL, Stripe, AWS S3
