@@ -12,7 +12,7 @@ The frontend for [Shoppy](https://github.com/mahalingam-dev-8/shopping-backend),
 - **TypeScript** — End-to-end type safety
 - **Tailwind CSS + Material UI** — Responsive styling and component library
 - **Stripe.js** — Client-side payment integration
-- **Socket.io Client** — Real-time product updates (development)
+- **Socket.io Client** — Real-time product updates
 
 ---
 
@@ -24,7 +24,7 @@ The frontend for [Shoppy](https://github.com/mahalingam-dev-8/shopping-backend),
 - Stripe Checkout integration for secure payments
 - Product image display from AWS S3
 - Order history page for users
-- Real-time product updates via Socket.io (development environment)
+- Real-time product updates via Socket.io
 - Middleware-based route protection
 
 ---
@@ -56,7 +56,7 @@ Open [http://localhost:3002](http://localhost:3002).
 
 ## Deployment
 
-Deployed on **Vercel** with automatic deploys from `main` branch. API requests are proxied to the AWS Elastic Beanstalk backend via Vercel rewrites configured in `vercel.json`.
+Deployed on **Vercel** with automatic deploys from `main` branch. API requests are routed through **AWS CloudFront** CDN to the Elastic Beanstalk backend for HTTPS termination and edge caching.
 
 ---
 
