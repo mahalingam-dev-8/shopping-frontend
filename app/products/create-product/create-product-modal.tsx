@@ -8,6 +8,7 @@ import createProduct from "../actions/create-product";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import SubmitButton from "../../common/components/submit-button";
 
 const modalStyles = {
   position: "absolute",
@@ -37,9 +38,11 @@ const VisuallyHiddenInput: CSSProperties = {
 interface CreateProductModalProps {
   open: boolean;
   handleClose: () => void;
+  /** Called after the product is created; imageError is set if the photo failed to upload. */
+  onCreated?: (imageError?: string) => void;
 }
 
-export default function CreateProductModal({ open, handleClose }: CreateProductModalProps) {
+export default function CreateProductModal({ open, handleClose, onCreated }: CreateProductModalProps) {
   const router = useRouter();
   const [response, setResponse] = useState<FormResponse>();
   const [filename, setfilename] = useState("");
@@ -65,7 +68,7 @@ export default function CreateProductModal({ open, handleClose }: CreateProductM
             action={async (formData) => {
               const res = await createProduct(formData);
               setResponse(res);
-              if (!res.error) { onClose(); router.refresh(); }
+              if (!res.error) { onClose(); onCreated?.(res.imageError); router.refresh(); }
             }}
           >
             <Stack spacing={2}>
@@ -89,12 +92,12 @@ export default function CreateProductModal({ open, handleClose }: CreateProductM
               />
               <TextField
                 name="price"
-                label="Price ($)"
+                label="Price (₹)"
                 variant="outlined"
                 required
                 fullWidth
                 type="number"
-                inputProps={{ min: 0, step: "0.01" }}
+                inputProps={{ min: 0.5, step: "0.01" }}
               />
 
               <Button
@@ -115,14 +118,13 @@ export default function CreateProductModal({ open, handleClose }: CreateProductM
                   style={VisuallyHiddenInput}
                   type="file"
                   name="image"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/webp"
                   onChange={(e) => setfilename(e.target.files?.[0]?.name ?? "")}
                 />
               </Button>
 
-              <Button type="submit" variant="contained" size="large" fullWidth>
-                Create Product
-              </Button>
+              {/* Disabled while saving, so a slow upload can't be submitted twice. */}
+              <SubmitButton label="Create Product" pendingLabel="Listing product..." />
             </Stack>
           </form>
         </Stack>

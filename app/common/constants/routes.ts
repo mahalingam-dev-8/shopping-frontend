@@ -19,3 +19,11 @@ export const routes = [
     path: "/orders",
   },
 ];
+
+// Shown only to admins (sellers), in addition to `routes`.
+export const adminRoutes = [
+  {
+    title: "Sales",
+    path: "/sales",
+  },
+];
