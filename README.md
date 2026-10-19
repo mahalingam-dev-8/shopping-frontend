@@ -1,31 +1,38 @@
 # 🛒 Shoppy — Frontend
 
-The frontend for [Shoppy](https://github.com/mahalingam-dev-8/shopping-backend), a full-stack e-commerce platform built with Next.js 14.
+The frontend for [Shoppy](https://github.com/mahalingam-dev-8/shoppy-backend), a full-stack e-commerce marketplace built with Next.js 14.
 
 **Live Demo:** [shopping-frontend-ebon.vercel.app](https://shopping-frontend-ebon.vercel.app)
+
+## Demo
+
+▶ [Watch the full flow (≈90 s)](https://www.loom.com/share/9613a8520bd04a83b266ff9ff50295b4): a seller lists a product, a buyer sees it appear live, pays with Stripe, and the order shows up in the buyer's orders and the seller's sales.
 
 ---
 
 ## Tech Stack
 
-- **Next.js 14** — App Router, Server Components, Server Actions
-- **TypeScript** — End-to-end type safety
-- **Tailwind CSS + Material UI** — Responsive styling and component library
-- **Stripe.js** — Client-side payment integration
-- **Socket.io Client** — Real-time product updates
+- **Next.js 14:** App Router, Server Components, Server Actions
+- **TypeScript:** end-to-end type safety
+- **Material UI + Tailwind CSS:** dark theme and responsive layout
+- **Stripe Checkout:** hosted, secure payments
+- **STOMP over WebSocket** (`@stomp/stompjs`): real-time product updates
 
 ---
 
 ## Features
 
-- Server-side rendering with Next.js App Router for fast initial loads
-- JWT authentication with HttpOnly cookies (managed via Server Actions)
-- Role-based UI — admin dashboard for product management, user view for browsing and purchasing
-- Stripe Checkout integration for secure payments
-- Product image display from AWS S3
-- Order history page for users
-- Real-time product updates via Socket.io
-- Middleware-based route protection
+- **Auth:** JWT in an HttpOnly cookie, managed through Server Actions, with middleware-based route protection.
+- **Roles:**
+  - customers browse and buy
+  - admins (sellers) list products and track their **Sales** (revenue, orders, customers)
+- **Live updates:** new or sold products appear for every shopper without a refresh.
+- **Products:** search, ₹ pricing, sold-out and "your listing" states, and image uploads with validation.
+- **Checkout:** Stripe Checkout, a payment success page, and order history.
+- **UX:**
+  - loading skeletons and a top progress bar
+  - toasts, and submit buttons that can't be double-clicked
+  - a password show/hide toggle
 
 ---
 
@@ -50,16 +57,16 @@ npm run dev
 
 Open [http://localhost:3002](http://localhost:3002).
 
-> The backend must be running at the URL specified in `NEXT_PUBLIC_API_URL`. See the [backend repo](https://github.com/mahalingam-dev-8/shopping-backend) for setup instructions.
+> The backend must be running at `NEXT_PUBLIC_API_URL`. See the [backend repo](https://github.com/mahalingam-dev-8/shoppy-backend) for setup instructions.
 
 ---
 
 ## Deployment
 
-Deployed on **Vercel** with automatic deploys from `main` branch. API requests are routed through **AWS CloudFront** CDN to the Elastic Beanstalk backend for HTTPS termination and edge caching.
+Deployed on **Vercel**, with automatic deploys from the `main` branch.
 
 ---
 
 ## Related
 
-- **Backend:** [shopping-backend](https://github.com/mahalingam-dev-8/shopping-backend) — NestJS API, PostgreSQL, Stripe, AWS S3
+- **Backend:** [shoppy-backend](https://github.com/mahalingam-dev-8/shoppy-backend). Spring Boot 3, Spring Security, PostgreSQL, Stripe, S3, WebSocket (STOMP).
