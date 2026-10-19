@@ -1,10 +1,11 @@
 import {
-  Box, Chip, Paper, Stack, Table, TableBody,
+  Box, Button, Chip, Paper, Stack, Table, TableBody,
   TableCell, TableContainer, TableHead, TableRow, Typography,
 } from "@mui/material";
 import getOrders, { Order } from "./actions/get-orders";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import { formatInr } from "../common/util/format";
 
 const soldChip = (sold: boolean) =>
   sold
@@ -12,7 +13,8 @@ const soldChip = (sold: boolean) =>
     : { bgcolor: "#d9770622", color: "#fb923c", border: "1px solid #d9770644", label: "Pending" };
 
 export default async function OrdersPage() {
-  const orders = await getOrders();
+  const result = await getOrders();
+  const orders = Array.isArray(result) ? result : [];
 
   return (
     <Box sx={{ py: 4 }}>
@@ -26,6 +28,7 @@ export default async function OrdersPage() {
         <Stack alignItems="center" spacing={2} py={10}>
           <ShoppingBagIcon sx={{ fontSize: 64, color: "#2a2a2a" }} />
           <Typography color="text.secondary">No orders yet</Typography>
+          <Button variant="contained" href="/">Browse products</Button>
         </Stack>
       ) : (
         <TableContainer component={Paper} sx={{ border: "1px solid #1f1f1f" }}>
@@ -55,7 +58,7 @@ export default async function OrdersPage() {
                   </TableCell>
                   <TableCell>
                     <Typography variant="body2" fontWeight={600} color="primary.main">
-                      ₹{order.product?.price ?? "-"}
+                      {order.product ? formatInr(order.product.price) : "-"}
                     </Typography>
                   </TableCell>
                   <TableCell>

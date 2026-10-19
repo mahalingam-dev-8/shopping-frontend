@@ -50,6 +50,20 @@ const darkTheme = createTheme({
         },
       },
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        input: {
+          // Chrome paints autofilled fields light blue regardless of theme. Delaying its
+          // background change indefinitely keeps the field transparent (an inset shadow
+          // would leave a visible edge beside the password eye icon).
+          "&:-webkit-autofill": {
+            WebkitTextFillColor: "#f5f5f5",
+            caretColor: "#f5f5f5",
+            transition: "background-color 600000s 0s, color 600000s 0s",
+          },
+        },
+      },
+    },
     MuiAppBar: {
       styleOverrides: {
         root: {
