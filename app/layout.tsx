@@ -10,6 +10,8 @@ import getMe from "./get-me";
 import { CurrentUser } from "./auth/user-context";
 import Footer from "./common/components/footer";
 import NextTopLoader from "nextjs-toploader";
+import ServerWakeScreen from "./common/components/server-wake-screen";
+import { isBackendAwake } from "./common/util/backend-status";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +25,21 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // While the free-tier backend is asleep, every server render would hang for up to a minute.
+  // Show the wake-up screen instead; it reloads the page once the backend answers.
+  if (!(await isBackendAwake())) {
+    return (
+      <html lang="en">
+        <body className={inter.className}>
+          <Providers authenticated={false} isAdmin={false} user={null}>
+            <CssBaseline />
+            <ServerWakeScreen />
+          </Providers>
+        </body>
+      </html>
+    );
+  }
+
   const isAuthenticated = authenticated();
   let user: CurrentUser | null = null;
   if (isAuthenticated) {
