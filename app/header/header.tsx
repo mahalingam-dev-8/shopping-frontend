@@ -15,13 +15,18 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import Chip from "@mui/material/Chip";
+import Divider from "@mui/material/Divider";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import { AuthContext } from "../auth/auth-context";
 import { AdminContext } from "../auth/admin-context";
+import { UserContext } from "../auth/user-context";
 import { MouseEvent, useContext, useState } from "react";
 import Link from "next/link";
-import { routes, unauthenticatedRoutes } from "../common/constants/routes";
-import { useRouter } from "next/navigation";
+import { adminRoutes, routes, unauthenticatedRoutes } from "../common/constants/routes";
+import { usePathname } from "next/navigation";
 
 interface HeaderProps {
   logout: () => Promise<void>;
@@ -29,7 +34,9 @@ interface HeaderProps {
 
 export default function Header({ logout }: HeaderProps) {
   const isAuthenticated = useContext(AuthContext);
-  const router = useRouter();
+  const isAdmin = useContext(AdminContext);
+  const pathname = usePathname();
+  const isActive = (path: string) => (path === "/" ? pathname === "/" : pathname.startsWith(path));
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
@@ -41,11 +48,14 @@ export default function Header({ logout }: HeaderProps) {
     setAnchorElNav(null);
   };
 
-  const pages = isAuthenticated ? routes : unauthenticatedRoutes;
+  const pages = isAuthenticated
+    ? [...routes, ...(isAdmin ? adminRoutes : [])]
+    : unauthenticatedRoutes;
 
   return (
     <AppBar position="sticky">
-      <Container maxWidth="xl">
+      {/* Same width as the page Container in layout.tsx, so the logo lines up with the content. */}
+      <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ gap: 2 }}>
           <ShoppingBasketIcon sx={{ color: "primary.main", display: { xs: "none", md: "flex" } }} />
           <Typography
@@ -81,7 +91,9 @@ export default function Header({ logout }: HeaderProps) {
               {pages.map((page) => (
                 <MenuItem
                   key={page.title}
-                  onClick={() => { router.push(page.path); handleCloseNavMenu(); }}
+                  component={Link}
+                  href={page.path}
+                  onClick={handleCloseNavMenu}
                 >
                   <Typography textAlign="center">{page.title}</Typography>
                 </MenuItem>
@@ -92,7 +104,7 @@ export default function Header({ logout }: HeaderProps) {
           <ShoppingBasketIcon sx={{ color: "primary.main", display: { xs: "flex", md: "none" } }} />
           <Typography
             variant="h6"
-            component="a"
+            component={Link}
             href="/"
             sx={{
               display: { xs: "flex", md: "none" },
@@ -111,8 +123,15 @@ export default function Header({ logout }: HeaderProps) {
             {pages.map((page) => (
               <Button
                 key={page.title}
-                onClick={() => { router.push(page.path); handleCloseNavMenu(); }}
-                sx={{ color: "text.secondary", "&:hover": { color: "text.primary" } }}
+                component={Link}
+                href={page.path}
+                sx={{
+                  color: isActive(page.path) ? "text.primary" : "text.secondary",
+                  borderRadius: 0,
+                  borderBottom: "2px solid",
+                  borderColor: isActive(page.path) ? "primary.main" : "transparent",
+                  "&:hover": { color: "text.primary", bgcolor: "transparent" },
+                }}
               >
                 {page.title}
               </Button>
@@ -126,46 +145,88 @@ export default function Header({ logout }: HeaderProps) {
   );
 }
 
+const roleChipSx = (isAdmin: boolean) =>
+  isAdmin
+    ? { bgcolor: "#f59e0b22", color: "#f59e0b", border: "1px solid #f59e0b44", fontWeight: 600 }
+    : { bgcolor: "#3b82f622", color: "#60a5fa", border: "1px solid #3b82f644", fontWeight: 600 };
+
+const UserAvatar = ({ email, size }: { email?: string; size: number }) => (
+  <Avatar
+    alt={email ?? "User"}
+    sx={{ width: size, height: size, bgcolor: "#f59e0b22", color: "primary.main", border: "1px solid #f59e0b44", fontWeight: 700 }}
+  >
+    {/* A letter initial; for emails starting with a digit, Avatar's default person icon. */}
+    {email && /^[a-z]/i.test(email) ? email.charAt(0).toUpperCase() : null}
+  </Avatar>
+);
+
 const Settings = ({ logout }: HeaderProps) => {
   const isAdmin = useContext(AdminContext);
+  const user = useContext(UserContext);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const closeMenu = () => setAnchorElUser(null);
 
   return (
-    <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center", gap: 1.5 }}>
-      <Chip
-        label={isAdmin ? "Admin" : "Customer"}
-        size="small"
-        sx={isAdmin
-          ? { bgcolor: "#f59e0b22", color: "#f59e0b", border: "1px solid #f59e0b44", fontWeight: 600 }
-          : { bgcolor: "#3b82f622", color: "#60a5fa", border: "1px solid #3b82f644", fontWeight: 600 }
-        }
-      />
+    <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Account">
         <IconButton onClick={(e) => setAnchorElUser(e.currentTarget)} sx={{ p: 0 }}>
-          <Avatar
-            alt="User"
-            sx={{ width: 36, height: 36, bgcolor: "#f59e0b22", color: "primary.main", border: "1px solid #f59e0b44" }}
-          />
+          <UserAvatar email={user?.email} size={36} />
         </IconButton>
       </Tooltip>
       <Menu
-        sx={{ mt: "45px" }}
         anchorEl={anchorElUser}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        keepMounted
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
+        keepMounted
         open={Boolean(anchorElUser)}
         onClose={() => setAnchorElUser(null)}
+        PaperProps={{
+          sx: {
+            mt: 1.5,
+            width: 280,
+            bgcolor: "#141414",
+            border: "1px solid #262626",
+            borderRadius: 2,
+            boxShadow: "0 16px 48px rgba(0,0,0,0.5)",
+          },
+        }}
       >
+        {user && (
+          <Box sx={{ px: 2, py: 1.5, display: "flex", alignItems: "center", gap: 1.5 }}>
+            <UserAvatar email={user.email} size={40} />
+            <Box sx={{ minWidth: 0 }}>
+              <Typography variant="body2" fontWeight={600} noWrap title={user.email}>
+                {user.email}
+              </Typography>
+              <Chip
+                label={isAdmin ? "Admin" : "Customer"}
+                size="small"
+                sx={{ ...roleChipSx(isAdmin), mt: 0.5, height: 20, fontSize: 11 }}
+              />
+            </Box>
+          </Box>
+        )}
+        {user && <Divider />}
+        <MenuItem component={Link} href="/orders" onClick={closeMenu}>
+          <ListItemIcon><ReceiptLongIcon fontSize="small" /></ListItemIcon>
+          My orders
+        </MenuItem>
+        {isAdmin && (
+          <MenuItem component={Link} href="/sales" onClick={closeMenu}>
+            <ListItemIcon><StorefrontIcon fontSize="small" /></ListItemIcon>
+            Sales
+          </MenuItem>
+        )}
+        <Divider />
         <MenuItem
           onClick={async () => {
-            await logout();
             setAnchorElUser(null);
+            await logout();
           }}
-          sx={{ gap: 1.5, color: "error.main" }}
+          sx={{ color: "error.main" }}
         >
-          <LogoutIcon fontSize="small" />
-          <Typography>Logout</Typography>
+          <ListItemIcon sx={{ color: "inherit" }}><LogoutIcon fontSize="small" /></ListItemIcon>
+          Log out
         </MenuItem>
       </Menu>
     </Box>

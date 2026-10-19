@@ -4,7 +4,8 @@ const backendHostname = new URL(apiUrl).hostname;
 
 const nextConfig = {
     images: {
-        remotePatterns: [...new Set(["localhost", backendHostname, "shoppy-product-images-mahalingam.s3.amazonaws.com"])].map(hostname => ({ hostname }))
+        // *.supabase.co: product images in Supabase Storage (current deployment).
+        remotePatterns: [...new Set(["localhost", backendHostname, "shoppy-product-images-mahalingam.s3.amazonaws.com", "*.supabase.co"])].map(hostname => ({ hostname }))
     },
     async rewrites() {
         return [

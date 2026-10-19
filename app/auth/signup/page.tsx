@@ -1,9 +1,11 @@
 "use client";
 
 import {
-  Button, Card, CardContent, Divider, Stack,
+  Card, CardContent, Divider, Stack,
   TextField, Typography, ToggleButton, ToggleButtonGroup
 } from "@mui/material";
+import PasswordField from "@/app/common/components/password-field";
+import SubmitButton from "@/app/common/components/submit-button";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import PersonIcon from "@mui/icons-material/Person";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
@@ -42,16 +44,18 @@ export default function Signup() {
                 name="email"
                 label="Email"
                 type="email"
+                autoComplete="email"
                 fullWidth
                 helperText={state?.error}
                 error={!!state?.error}
               />
-              <TextField
+              <PasswordField
                 name="password"
                 label="Password"
-                type="password"
+                autoComplete="new-password"
                 fullWidth
                 error={!!state?.error}
+                helperText="8+ characters with upper and lower case, a number and a symbol"
               />
 
               <input type="hidden" name="role" value={role} />
@@ -95,11 +99,14 @@ export default function Signup() {
                     Admin
                   </ToggleButton>
                 </ToggleButtonGroup>
+                <Typography variant="caption" color="text.secondary">
+                  {role === "ADMIN"
+                    ? "Admins list products and track their sales."
+                    : "Customers browse and buy products."}
+                </Typography>
               </Stack>
 
-              <Button type="submit" variant="contained" fullWidth size="large">
-                Create Account
-              </Button>
+              <SubmitButton label="Create Account" pendingLabel="Creating account..." />
             </Stack>
           </form>
 
