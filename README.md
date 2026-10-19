@@ -1,8 +1,9 @@
 # 🛒 Shoppy — Frontend
 
-The frontend for [Shoppy](https://github.com/mahalingam-dev-8/shoppy-backend), a full-stack e-commerce marketplace built with Next.js 14.
+Next.js 14 storefront for **Shoppy**, a full-stack e-commerce marketplace.
 
-**Live Demo:** [shopping-frontend-ebon.vercel.app](https://shopping-frontend-ebon.vercel.app)
+- **Live Demo:** [shopping-frontend-ebon.vercel.app](https://shopping-frontend-ebon.vercel.app)
+- **Backend (Spring Boot):** [shoppy-backend](https://github.com/mahalingam-dev-8/shoppy-backend)
 
 ## Demo
 
