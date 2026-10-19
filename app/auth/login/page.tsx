@@ -1,12 +1,14 @@
 "use client";
 
-import { Button, Card, CardContent, Divider, Stack, TextField, Typography } from "@mui/material";
+import { Card, CardContent, Divider, Stack, TextField, Typography } from "@mui/material";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import NextLink from "next/link";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import login from "./login";
+import PasswordField from "@/app/common/components/password-field";
+import SubmitButton from "@/app/common/components/submit-button";
 
 export default function Login() {
   const router = useRouter();
@@ -38,18 +40,17 @@ export default function Login() {
                 name="email"
                 label="Email"
                 type="email"
+                autoComplete="email"
                 fullWidth
               />
-              <TextField
+              <PasswordField
                 error={!!state?.error}
                 name="password"
                 label="Password"
-                type="password"
+                autoComplete="current-password"
                 fullWidth
               />
-              <Button type="submit" variant="contained" fullWidth size="large">
-                Sign In
-              </Button>
+              <SubmitButton label="Sign In" pendingLabel="Signing in..." />
             </Stack>
           </form>
 
