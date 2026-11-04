@@ -1,43 +1,41 @@
-# 🛒 Shoppy — Frontend
+# Shoppy: Frontend
 
-Next.js 14 storefront for **Shoppy**, a full-stack e-commerce marketplace.
+The Next.js storefront for Shoppy, a full-stack e-commerce marketplace with Stripe payments and real-time stock updates.
 
-- **Live Demo:** [shopping-frontend-ebon.vercel.app](https://shopping-frontend-ebon.vercel.app)
-- **Backend (Spring Boot):** [shoppy-backend](https://github.com/mahalingam-dev-8/shoppy-backend)
+**[▶ Watch the 90-second demo](https://www.loom.com/share/9613a8520bd04a83b266ff9ff50295b4)** · **[Live app](https://shopping-frontend-ebon.vercel.app)** · **[Backend repo](https://github.com/mahalingam-dev-8/shoppy-backend)**
 
-## Demo
+### Try it
 
-▶ [Watch the full flow (≈90 s)](https://www.loom.com/share/9613a8520bd04a83b266ff9ff50295b4): a seller lists a product, a buyer sees it appear live, pays with Stripe, and the order shows up in the buyer's orders and the seller's sales.
+| Role | Email | Password |
+|---|---|---|
+| Buyer | `demo.buyer@example.com` | `ShoppyDemo@2026` |
+| Seller | `demo.seller@example.com` | `ShoppyDemo@2026` |
 
----
+Payments run in Stripe test mode. Use card `4242 4242 4242 4242`, any future expiry date and any CVC.
 
-## Tech Stack
+> The backend runs on a free instance. If it has been idle, the first load can take up to a minute.
 
-- **Next.js 14:** App Router, Server Components, Server Actions
-- **TypeScript:** end-to-end type safety
-- **Material UI + Tailwind CSS:** dark theme and responsive layout
-- **Stripe Checkout:** hosted, secure payments
-- **STOMP over WebSocket** (`@stomp/stompjs`): real-time product updates
+## Screenshots
 
----
+| Storefront | Checkout |
+|---|---|
+| ![Storefront](docs/screenshots/storefront.png) | ![Checkout](docs/screenshots/checkout.png) |
+| **My orders** | **Seller sales** |
+| ![Orders](docs/screenshots/orders.png) | ![Sales](docs/screenshots/sales.png) |
 
 ## Features
 
-- **Auth:** JWT in an HttpOnly cookie, managed through Server Actions, with middleware-based route protection.
-- **Roles:**
-  - customers browse and buy
-  - admins (sellers) list products and track their **Sales** (revenue, orders, customers)
-- **Live updates:** new or sold products appear for every shopper without a refresh.
-- **Products:** search, ₹ pricing, sold-out and "your listing" states, and image uploads with validation.
-- **Checkout:** Stripe Checkout, a payment success page, and order history.
-- **UX:**
-  - loading skeletons and a top progress bar
-  - toasts, and submit buttons that can't be double-clicked
-  - a password show/hide toggle
+- Buyers browse and pay. Sellers list products and see their revenue, orders and customers on a sales page.
+- New and sold-out products show up for every shopper without a refresh, over a STOMP WebSocket.
+- The JWT lives in an HttpOnly cookie handled by Server Actions, and protected pages are guarded in middleware.
+- Checkout goes through Stripe, followed by a success page and an order history.
 
----
+## Tech stack
 
-## Getting Started
+Next.js 14 (App Router, Server Components, Server Actions) · TypeScript · Material UI · Tailwind CSS · Stripe · `@stomp/stompjs` · Vercel
+
+<details>
+<summary><b>Run locally</b></summary>
 
 ```bash
 git clone https://github.com/mahalingam-dev-8/shopping-frontend.git
@@ -46,28 +44,16 @@ npm install
 ```
 
 Create `.env.local`:
+
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:3001
 NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_...
 ```
 
-Run the dev server:
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3002](http://localhost:3002).
+The backend must be running at `NEXT_PUBLIC_API_URL`. See the [backend repo](https://github.com/mahalingam-dev-8/shoppy-backend) for setup.
 
-> The backend must be running at `NEXT_PUBLIC_API_URL`. See the [backend repo](https://github.com/mahalingam-dev-8/shoppy-backend) for setup instructions.
-
----
-
-## Deployment
-
-Deployed on **Vercel**, with automatic deploys from the `main` branch.
-
----
-
-## Related
-
-- **Backend:** [shoppy-backend](https://github.com/mahalingam-dev-8/shoppy-backend). Spring Boot 3, Spring Security, PostgreSQL, Stripe, S3, WebSocket (STOMP).
+</details>
